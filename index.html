@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Licence &amp; CE Compliance Tracker</title>
+<style>
+:root{
+ --ink:#101d26; --ink2:#1b2a36; --paper:#f7f5ef; --card:#ffffff; --line:#dfe4e0;
+ --muted:#5a6b78; --acc:#0f7b6c; --acc2:#0b5f54; --gold:#c9a227; --red:#b3261e;
+ --amber:#b26a00; --blue:#1f5673; --chip:#eef2ee;
+ --r:12px; --sh:0 1px 2px rgba(16,29,38,.06),0 4px 14px rgba(16,29,38,.05);
+}
+[data-dark="1"]{
+ --ink:#e9eef1; --ink2:#cfd8de; --paper:#0d161c; --card:#132029; --line:#24333d;
+ --muted:#93a4b0; --acc:#3fbfa8; --acc2:#7fd8c6; --gold:#e0bd4a; --red:#ff8a80;
+ --amber:#ffc46b; --blue:#7fc3e8; --chip:#1a2831;
+ --sh:0 1px 2px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);
+ font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.top{position:sticky;top:0;z-index:50;background:var(--card);border-bottom:1px solid var(--line);
+ padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.2px;display:flex;align-items:center;gap:8px}
+.brand .dot{width:10px;height:10px;border-radius:50%;background:var(--acc)}
+.brand small{display:block;font-weight:500;color:var(--muted);font-size:11px;letter-spacing:.4px}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.tab{border:1px solid transparent;background:transparent;color:var(--muted);padding:7px 11px;
+ border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:600}
+.tab:hover{background:var(--chip);color:var(--ink)}
+.tab.on{background:var(--acc);color:#fff}
+.wrap{max-width:1240px;margin:0 auto;padding:18px 16px 60px}
+h2{margin:0 0 4px;font-size:20px;letter-spacing:-.2px}
+.sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:15px;box-shadow:var(--sh)}
+.card h3{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.kpi{font-size:27px;font-weight:700;letter-spacing:-.6px;color:var(--acc)}
+.kpi.warn{color:var(--amber)} .kpi.bad{color:var(--red)} .kpi.gold{color:var(--gold)}
+.note{color:var(--muted);font-size:12px;margin-top:4px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);
+ padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+.tblwrap{overflow-x:auto}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 13px;
+ border-radius:9px;cursor:pointer;font-size:13.5px;font-weight:600}
+.btn:hover{background:var(--chip)}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn.pri:hover{background:var(--acc2)}
+.btn.sm{padding:5px 9px;font-size:12.5px}
+.btn.danger{color:var(--red)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-block;padding:2px 9px;border-radius:99px;font-size:11.5px;font-weight:700;
+ background:var(--chip);color:var(--ink2)}
+.pill.good{background:#e0f0e8;color:#1c6b4f}
+.pill.amber{background:#fdf0dc;color:#8a5200}
+.pill.bad{background:#fbe4e2;color:#8c1d16}
+.pill.blue{background:#e3eef5;color:#1a4a63}
+[data-dark="1"] .pill.good{background:#123528;color:#7fd8c6}
+[data-dark="1"] .pill.amber{background:#3a2a10;color:#ffc46b}
+[data-dark="1"] .pill.bad{background:#3b1b18;color:#ff8a80}
+[data-dark="1"] .pill.blue{background:#142c3a;color:#7fc3e8}
+.bar{height:9px;background:var(--chip);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);border-radius:99px}
+.bar i.amber{background:var(--amber)} .bar i.bad{background:var(--red)}
+.barrow{display:grid;grid-template-columns:210px 1fr 90px;gap:10px;align-items:center;
+ font-size:13px;margin-bottom:9px}
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin:0 0 4px}
+input,select,textarea{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:9px;
+ background:var(--paper);color:var(--ink);font:inherit;font-size:13.5px}
+textarea{min-height:60px;resize:vertical}
+.fgrid{display:grid;gap:11px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.modal{position:fixed;inset:0;background:rgba(9,16,21,.55);display:flex;align-items:flex-start;
+ justify-content:center;padding:26px 14px;z-index:99;overflow:auto}
+.sheet{background:var(--card);border-radius:14px;max-width:680px;width:100%;padding:19px;
+ box-shadow:0 18px 50px rgba(0,0,0,.3)}
+.sheet h3{margin:0 0 14px;font-size:17px;text-transform:none;letter-spacing:0;color:var(--ink)}
+.empty{padding:22px;text-align:center;color:var(--muted);font-size:13.5px}
+.empty b{display:block;color:var(--ink);font-size:15px;margin-bottom:5px}
+.hint{color:var(--muted);font-size:12.5px;margin:0 0 12px}
+.legalbox{border:1px solid var(--gold);border-radius:10px;padding:11px 13px;background:var(--chip);
+ font-size:12.5px;color:var(--ink2);margin-bottom:14px}
+.legalbox b{color:var(--ink)}
+.lamp{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px}
+.lamp.g{background:#1c6b4f} .lamp.y{background:#c9a227} .lamp.o{background:#b26a00} .lamp.r{background:#b3261e}
+.sheetprint{background:#fff;color:#101d26;padding:26px;border-radius:10px;border:1px solid #dfe4e0}
+.sheetprint h4{margin:0 0 3px;font-size:17px}
+.sheetprint .psub{font-size:12px;color:#5a6b78;margin-bottom:15px}
+.sheetprint table{font-size:12.5px}
+.sheetprint th,.sheetprint td{border-bottom:1px solid #e6eae7;color:#101d26}
+.sheetprint h5{margin:18px 0 6px;font-size:13px}
+@media print{
+ .top,.noprint{display:none!important}
+ .wrap{padding:0;max-width:none}
+ body{background:#fff}
+ .sheetprint{border:none;padding:0}
+}
+.demo-banner{position:sticky;top:0;z-index:9999;background:#B9770E;color:#fff;font:600 13px/1.4 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;text-align:center;padding:9px 14px}
+.demo-banner a{color:#fff;text-decoration:underline}
+.demo-banner .x{position:absolute;right:10px;top:6px;background:none;border:none;color:#fff;font:inherit;cursor:pointer;opacity:.85;padding:4px 8px}
+.demo-banner .x:hover{opacity:1}
+@media print{.demo-banner{display:none!important}}
+</style></head>
+<body>
+<div class="demo-banner" id="demoBanner">DEMO — example data, add up to 15 of your own courses and see whether it thinks the way you do. Nothing is saved permanently and it can reset any time. <a href="https://www.etsy.com/shop/LedgerLoopStudio" target="_blank" rel="noopener">Buy the full version</a> for your own unlimited, permanent copy.<button class="x" onclick="document.getElementById('demoBanner').style.display='none'" aria-label="Dismiss">✕</button></div>
+<div class="top">
+  <div class="brand"><span class="dot"></span><span>Licence &amp; CE Compliance<small>LEDGERLOOPSTUDIO</small></span></div>
+  <div class="tabs" id="tabs"></div>
+  <button class="tab" data-dark="1">☾ Dark</button>
+</div>
+<div class="wrap" id="app"></div>
+
+<script id="logic">
+/* ============================================================================
+   PURE LOGIC — no DOM. Plain data in, plain data out, unit-testable.
+
+   THE HARD PROBLEM THIS SOLVES: a licence belongs to a PERSON, and a business
+   is only compliant if every person on the roster is current. One tradesperson
+   tracking their own renewal is the easy case. A contractor with six licensed
+   staff across three states, each with their own CE cycle, plus company-level
+   insurance and bond expiries, is the case that actually costs money when it
+   goes wrong.
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   CONFIGURATION — EDIT FREELY. Licence classes, CE requirements, cycle lengths
+   and renewal windows are set by each state or licensing authority, differ by
+   trade and class, and change. Nothing below states any authority's current
+   rules. Confirm every figure against your own licensing board.
+   Last reviewed by the author: 2026-09-17.
+   --------------------------------------------------------------------------- */
+var CRITERIA_REVIEWED = "2026-09-17";
+
+var TRADES = [
+  { id: "electrical",  label: "Electrical" },
+  { id: "hvac",        label: "HVAC / refrigeration" },
+  { id: "plumbing",    label: "Plumbing" },
+  { id: "general",     label: "General contracting" },
+  { id: "roofing",     label: "Roofing" },
+  { id: "realestate",  label: "Real estate" },
+  { id: "insurance",   label: "Insurance producer" },
+  { id: "accounting",  label: "Accounting / CPA" },
+  { id: "lowvoltage",  label: "Low voltage / alarm" },
+  { id: "elevator",    label: "Elevator" },
+  { id: "wellpump",    label: "Well & pump" },
+  { id: "other",       label: "Other trade or profession" }
+];
+
+var CE_TOPICS = [
+  { id: "code",        label: "Code update" },
+  { id: "safety",      label: "Safety / OSHA" },
+  { id: "business",    label: "Business & law" },
+  { id: "ethics",      label: "Ethics" },
+  { id: "technical",   label: "Technical / trade skills" },
+  { id: "energy",      label: "Energy efficiency" },
+  { id: "supervision", label: "Supervision & management" },
+  { id: "other",       label: "Other approved" }
+];
+
+/* Company-level documents that also expire and also stop you working. */
+var DOC_TYPES = [
+  { id: "liability",   label: "General liability insurance" },
+  { id: "workcomp",    label: "Workers' compensation" },
+  { id: "bond",        label: "Surety bond" },
+  { id: "vehicle",     label: "Commercial vehicle insurance" },
+  { id: "registration",label: "Business registration" },
+  { id: "certification", label: "Trade certification" },
+  { id: "other",       label: "Other document" }
+];
+
+/* ---------- helpers ---------- */
+function pad2(n) { return (n < 10 ? "0" : "") + n; }
+function toISO(d) { return d.getFullYear() + "-" + pad2(d.getMonth() + 1) + "-" + pad2(d.getDate()); }
+function parseISO(s) {
+  if (!s) return null;
+  var p = String(s).split("-");
+  if (p.length !== 3) return null;
+  var d = new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+  return isNaN(d.getTime()) ? null : d;
+}
+function daysUntil(a, b) {
+  var x = parseISO(a), y = parseISO(b);
+  if (!x || !y) return null;
+  return Math.round((y - x) / 86400000);
+}
+function addMonths(iso, months) {
+  var d = parseISO(iso);
+  if (!d) return null;
+  var t = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  t.setMonth(t.getMonth() + months);
+  return toISO(t);
+}
+function num(v) { var n = parseFloat(v); return isNaN(n) ? 0 : n; }
+function round1(n) { return Math.round(n * 10) / 10; }
+function pct(part, whole) { return whole > 0 ? (part / whole) * 100 : 0; }
+function tradeLabel(id) {
+  for (var i = 0; i < TRADES.length; i++) { if (TRADES[i].id === id) return TRADES[i].label; }
+  return id || "";
+}
+function topicLabel(id) {
+  for (var i = 0; i < CE_TOPICS.length; i++) { if (CE_TOPICS[i].id === id) return CE_TOPICS[i].label; }
+  return id || "";
+}
+function docTypeLabel(id) {
+  for (var i = 0; i < DOC_TYPES.length; i++) { if (DOC_TYPES[i].id === id) return DOC_TYPES[i].label; }
+  return id || "";
+}
+
+/* ---------- CE allocation ---------- */
+function appliesTo(ceRow, licenceId) {
+  var list = ceRow.licences || [];
+  for (var i = 0; i < list.length; i++) { if (list[i] === licenceId) return true; }
+  return false;
+}
+function ceForLicence(ceRows, licence) {
+  var start = licence.cycleStart;
+  var end = addMonths(start, num(licence.cycleMonths));
+  var out = [];
+  for (var i = 0; i < ceRows.length; i++) {
+    var r = ceRows[i];
+    if (!appliesTo(r, licence.id)) continue;
+    if (!r.date) continue;
+    if (r.date >= start && r.date <= end) out.push(r);
+  }
+  return out;
+}
+function hoursByTopic(ceRows) {
+  var map = {};
+  for (var i = 0; i < ceRows.length; i++) {
+    var k = ceRows[i].topic || "other";
+    map[k] = round1((map[k] || 0) + num(ceRows[i].hours));
+  }
+  return map;
+}
+
+/* THE PER-LICENCE STATUS. */
+function licenceStatus(licence, ceRows, todayISOstr, warnDays) {
+  var warn = warnDays === undefined ? 90 : warnDays;
+  var rows = ceForLicence(ceRows, licence);
+  var cycleEnd = addMonths(licence.cycleStart, num(licence.cycleMonths));
+
+  var logged = 0, unverified = 0;
+  for (var i = 0; i < rows.length; i++) {
+    logged += num(rows[i].hours);
+    if (rows[i].certificate !== "1") unverified += num(rows[i].hours);
+  }
+  logged = round1(logged); unverified = round1(unverified);
+
+  var byTopic = hoursByTopic(rows);
+  var mins = licence.topicMins || [];
+  var topicChecks = [];
+  var topicsMet = true;
+  for (var m = 0; m < mins.length; m++) {
+    var have = byTopic[mins[m].topic] || 0;
+    var need = num(mins[m].hours);
+    var ok = have >= need;
+    if (!ok) topicsMet = false;
+    topicChecks.push({ topic: mins[m].topic, label: topicLabel(mins[m].topic),
+                       have: round1(have), need: need, ok: ok,
+                       percent: need > 0 ? Math.min(100, pct(have, need)) : 100 });
+  }
+
+  var need = num(licence.ceHours);
+  var remaining = Math.max(0, need - logged);
+  var expiry = licence.expiry || cycleEnd;
+  var daysLeft = daysUntil(todayISOstr, expiry);
+  var monthsLeft = daysLeft === null ? null : daysLeft / 30.44;
+
+  return {
+    licenceId: licence.id, personId: licence.personId,
+    cycleStart: licence.cycleStart, cycleEnd: cycleEnd, expiry: expiry,
+    entries: rows.length,
+    logged: logged, unverified: unverified,
+    need: need, remaining: round1(remaining),
+    byTopic: byTopic, topicChecks: topicChecks, topicsMet: topicsMet,
+    hoursMet: logged >= need,
+    certificatesComplete: unverified === 0,
+    daysLeft: daysLeft,
+    expired: daysLeft !== null && daysLeft < 0,
+    expiringSoon: daysLeft !== null && daysLeft >= 0 && daysLeft <= warn,
+    perMonthNeeded: monthsLeft && monthsLeft > 0 ? round1(remaining / monthsLeft) : null,
+    percent: need > 0 ? Math.min(100, pct(logged, need)) : 100,
+    ready: logged >= need && topicsMet && unverified === 0
+  };
+}
+
+/* THE ROSTER VIEW — is this person clear to work? */
+function personStatus(person, licences, ceRows, todayISOstr, warnDays) {
+  var mine = [];
+  for (var i = 0; i < licences.length; i++) {
+    if (licences[i].personId === person.id) mine.push(licences[i]);
+  }
+  var statuses = [], expired = 0, soon = 0, short = 0, ready = 0;
+  for (var j = 0; j < mine.length; j++) {
+    var s = licenceStatus(mine[j], ceRows, todayISOstr, warnDays);
+    statuses.push(s);
+    if (s.expired) expired++;
+    else if (s.expiringSoon) soon++;
+    if (!s.ready) short++; else ready++;
+  }
+  var state = expired > 0 ? "expired"
+    : (mine.length === 0 ? "none"
+      : (soon > 0 && short > 0 ? "atrisk"
+        : (short > 0 ? "short" : "clear")));
+  return {
+    personId: person.id, licences: mine.length, statuses: statuses,
+    expired: expired, expiringSoon: soon, notReady: short, ready: ready,
+    state: state,
+    clearToWork: expired === 0 && mine.length > 0
+  };
+}
+
+/* Company-level documents. */
+function docStatus(doc, todayISOstr, warnDays) {
+  var warn = warnDays === undefined ? 60 : warnDays;
+  var d = daysUntil(todayISOstr, doc.expiry);
+  return {
+    daysLeft: d,
+    expired: d !== null && d < 0,
+    expiringSoon: d !== null && d >= 0 && d <= warn,
+    state: d === null ? "unknown" : (d < 0 ? "expired" : (d <= warn ? "soon" : "ok"))
+  };
+}
+
+/* One calendar for everything that expires: licences and company documents. */
+function renewalCalendar(licences, docs, people, todayISOstr) {
+  var nameOf = function (pid) {
+    for (var i = 0; i < people.length; i++) { if (people[i].id === pid) return people[i].name; }
+    return "";
+  };
+  var items = [];
+  for (var i = 0; i < licences.length; i++) {
+    var L = licences[i];
+    var exp = L.expiry || addMonths(L.cycleStart, num(L.cycleMonths));
+    items.push({ kind: "licence", id: L.id,
+                 label: tradeLabel(L.trade) + " — " + (L.state || ""),
+                 who: nameOf(L.personId), detail: L.number || "",
+                 date: exp, daysLeft: daysUntil(todayISOstr, exp) });
+  }
+  for (var j = 0; j < docs.length; j++) {
+    items.push({ kind: "document", id: docs[j].id, label: docTypeLabel(docs[j].type),
+                 who: docs[j].holder || "Company", detail: docs[j].number || "",
+                 date: docs[j].expiry, daysLeft: daysUntil(todayISOstr, docs[j].expiry) });
+  }
+  items.sort(function (a, b) {
+    if (a.date === b.date) return 0;
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return a.date < b.date ? -1 : 1;
+  });
+  return items;
+}
+
+/* COMPANY COMPLIANCE — the one number an owner actually wants. */
+function companyCompliance(people, licences, docs, ceRows, todayISOstr) {
+  var peopleClear = 0, peopleAtRisk = 0, peopleBlocked = 0;
+  for (var i = 0; i < people.length; i++) {
+    var ps = personStatus(people[i], licences, ceRows, todayISOstr);
+    if (ps.state === "expired") peopleBlocked++;
+    else if (ps.state === "clear") peopleClear++;
+    else peopleAtRisk++;
+  }
+  var docsExpired = 0, docsSoon = 0;
+  for (var j = 0; j < docs.length; j++) {
+    var ds = docStatus(docs[j], todayISOstr);
+    if (ds.expired) docsExpired++;
+    else if (ds.expiringSoon) docsSoon++;
+  }
+  var licExpired = 0, licSoon = 0, licShort = 0;
+  for (var k = 0; k < licences.length; k++) {
+    var ls = licenceStatus(licences[k], ceRows, todayISOstr);
+    if (ls.expired) licExpired++;
+    else if (ls.expiringSoon) licSoon++;
+    if (!ls.ready) licShort++;
+  }
+
+  var problems = peopleBlocked + docsExpired;
+  var warnings = peopleAtRisk + docsSoon;
+  var lamp = problems > 0 ? "r" : (warnings > 0 ? (warnings > 2 ? "o" : "y") : "g");
+
+  /* Name the actual cause. A lapsed bond and a lapsed licence are both
+     red, but they stop different things, so say which one it is. */
+  var verdict;
+  if (peopleBlocked > 0 && docsExpired > 0) verdict = "Licence and document expired";
+  else if (peopleBlocked > 0) verdict = "Someone cannot work today";
+  else if (docsExpired > 0) verdict = "A company document has expired";
+  else if (warnings > 0) verdict = "Action needed this month";
+  else verdict = "Everything current";
+
+  return {
+    people: people.length, peopleClear: peopleClear,
+    peopleAtRisk: peopleAtRisk, peopleBlocked: peopleBlocked,
+    licences: licences.length, licExpired: licExpired, licSoon: licSoon, licShort: licShort,
+    docs: docs.length, docsExpired: docsExpired, docsSoon: docsSoon,
+    lamp: lamp, verdict: verdict,
+    score: people.length ? Math.round(pct(peopleClear, people.length)) : 0
+  };
+}
+
+function toCSV(rows) {
+  var out = [];
+  for (var i = 0; i < rows.length; i++) {
+    var line = [];
+    for (var j = 0; j < rows[i].length; j++) {
+      var cell = rows[i][j] === null || rows[i][j] === undefined ? "" : String(rows[i][j]);
+      line.push('"' + cell.replace(/"/g, '""') + '"');
+    }
+    out.push(line.join(","));
+  }
+  return out.join("\n");
+}
+</script>
+
+<script id="uiapp">
+/* ===== UI ===== */
+var KEY = "llsTradesLicence_v1";
+/* ---- demo-only limit: this block exists only in the public try-it demo, never in the sold product ---- */
+var DEMO_MODE = true, DEMO_CE_LIMIT = 24; /* 9 seeded + 15 room to try adding your own */
+function demoLimitReached(){
+  if(!DEMO_MODE) return false;
+  if(!STATE.ce || STATE.ce.length < DEMO_CE_LIMIT) return false;
+  alert("You've reached the "+DEMO_CE_LIMIT+"-entry demo limit.\n\nThis is just a preview — buy the full version for unlimited entries, all features unlocked, and your own permanent copy.");
+  return true;
+}
+
+var STATE = null, VIEW = "dash", MODAL = null, EDIT = null, PACKLIC = null;
+
+var TABS = [
+  ["dash", "Dashboard"], ["people", "People"], ["licences", "Licences"],
+  ["ce", "CE Log"], ["requirements", "Requirements"], ["docs", "Documents"],
+  ["calendar", "Renewal Calendar"], ["reports", "Reports"]
+];
+
+function uid() { return "id" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+function esc(s) {
+  return String(s === null || s === undefined ? "" : s)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+function todayISO() { return toISO(new Date()); }
+
+function blank() {
+  return {
+    company: { name: "", warnDays: 90, docWarnDays: 60 },
+    people: [], licences: [], ce: [], docs: [], settings: { dark: "0" }
+  };
+}
+
+function seed() {
+  var today = new Date();
+  var iso = function (mb, day) { return toISO(new Date(today.getFullYear(), today.getMonth() - mb, day)); };
+  var fwd = function (mf, day) { return toISO(new Date(today.getFullYear(), today.getMonth() + mf, day)); };
+
+  var p1 = uid(), p2 = uid(), p3 = uid();
+  var people = [
+    { id: p1, name: "You (owner)", role: "Master electrician / owner", email: "", phone: "", notes: "" },
+    { id: p2, name: "D. Marchetti", role: "Journeyman electrician", email: "", phone: "", notes: "" },
+    { id: p3, name: "S. Okonkwo", role: "HVAC technician", email: "", phone: "", notes: "Cross-trained, holds two licences" }
+  ];
+
+  var l1 = uid(), l2 = uid(), l3 = uid(), l4 = uid();
+  var licences = [
+    { id: l1, personId: p1, trade: "electrical", state: "Arizona", classLevel: "Master",
+      number: "EL-M-44120", cycleStart: iso(20, 1), cycleMonths: 24, ceHours: 16,
+      expiry: fwd(4, 30),
+      topicMins: [ { topic: "code", hours: 8 }, { topic: "business", hours: 4 } ], notes: "" },
+    { id: l2, personId: p2, trade: "electrical", state: "Arizona", classLevel: "Journeyman",
+      number: "EL-J-90233", cycleStart: iso(14, 1), cycleMonths: 24, ceHours: 16,
+      expiry: fwd(10, 15),
+      topicMins: [ { topic: "code", hours: 8 } ], notes: "" },
+    { id: l3, personId: p3, trade: "hvac", state: "Arizona", classLevel: "Technician",
+      number: "HV-T-22781", cycleStart: iso(22, 1), cycleMonths: 24, ceHours: 12,
+      expiry: fwd(1, 20),
+      topicMins: [ { topic: "safety", hours: 4 }, { topic: "energy", hours: 2 } ], notes: "" },
+    { id: l4, personId: p3, trade: "lowvoltage", state: "Nevada", classLevel: "Technician",
+      number: "LV-1190", cycleStart: iso(8, 1), cycleMonths: 36, ceHours: 8,
+      expiry: fwd(27, 5),
+      topicMins: [], notes: "Second state, for the Laughlin contracts" }
+  ];
+
+  var ce = [];
+  var addCE = function (mb, day, topic, hours, prov, cert, lics, title) {
+    ce.push({ id: uid(), date: iso(mb, day), title: title || "", topic: topic, hours: hours,
+              provider: prov, certificate: cert ? "1" : "0", licences: lics, notes: "" });
+  };
+  addCE(18, 11, "code", 8, "State electrical board approved provider", true, [l1], "NEC code update");
+  addCE(16, 7, "business", 4, "Contractor business school", true, [l1], "Business & law refresher");
+  addCE(12, 19, "code", 8, "Regional trade academy", true, [l1, l2], "Code cycle changes");
+  addCE(10, 3, "safety", 4, "Safety council", true, [l3], "OSHA 10 refresher");
+  addCE(8, 22, "technical", 6, "Manufacturer training", true, [l3], "Heat pump commissioning");
+  addCE(6, 14, "code", 4, "Regional trade academy", true, [l2], "Grounding and bonding");
+  addCE(4, 9, "energy", 2, "Utility efficiency programme", false, [l3], "Efficiency standards update");
+  addCE(2, 27, "technical", 4, "Low voltage institute", true, [l4], "Fire alarm systems");
+  addCE(1, 12, "safety", 3, "Safety council", false, [l2], "Ladder and fall safety");
+
+  var docs = [
+    { id: uid(), type: "liability", holder: "Company", provider: "Regional Mutual",
+      number: "GL-3391208", issued: iso(10, 1), expiry: fwd(2, 1), notes: "" },
+    { id: uid(), type: "workcomp", holder: "Company", provider: "State fund",
+      number: "WC-889120", issued: iso(10, 1), expiry: fwd(2, 1), notes: "" },
+    { id: uid(), type: "bond", holder: "Company", provider: "Surety Partners",
+      number: "SB-44021", issued: iso(22, 15), expiry: iso(1, 15), notes: "Lapsed — renew before next permit" },
+    { id: uid(), type: "vehicle", holder: "Company", provider: "Fleet Insurance Co",
+      number: "CV-77310", issued: iso(7, 20), expiry: fwd(5, 20), notes: "Three vans" }
+  ];
+
+  return {
+    company: { name: "Sample Electrical & HVAC", warnDays: 90, docWarnDays: 60 },
+    people: people, licences: licences, ce: ce, docs: docs, settings: { dark: "0" }
+  };
+}
+
+function load() {
+  try {
+    var raw = localStorage.getItem(KEY);
+    if (raw) { STATE = JSON.parse(raw); }
+  } catch (e) { STATE = null; }
+  if (!STATE || !STATE.licences) STATE = seed();
+  if (!STATE.settings) STATE.settings = { dark: "0" };
+  if (!STATE.people) STATE.people = [];
+  if (!STATE.ce) STATE.ce = [];
+  if (!STATE.docs) STATE.docs = [];
+  if (!STATE.company) STATE.company = blank().company;
+  document.documentElement.setAttribute("data-dark", STATE.settings.dark === "1" ? "1" : "0");
+}
+function save() { try { localStorage.setItem(KEY, JSON.stringify(STATE)); } catch (e) { } }
+
+function el(tag, attrs, html) {
+  var a = "";
+  if (attrs) {
+    for (var k in attrs) {
+      if (attrs[k] === null || attrs[k] === undefined || attrs[k] === "") continue;
+      a += " " + k + '="' + String(attrs[k]).replace(/"/g, "&quot;") + '"';
+    }
+  }
+  return "<" + tag + a + ">" + (html === undefined || html === null ? "" : html) + "</" + tag + ">";
+}
+
+function warnDays() { return num(STATE.company.warnDays) || 90; }
+function docWarnDays() { return num(STATE.company.docWarnDays) || 60; }
+
+function personById(id) {
+  for (var i = 0; i < STATE.people.length; i++) { if (STATE.people[i].id === id) return STATE.people[i]; }
+  return null;
+}
+function personName(id) { var p = personById(id); return p ? p.name : "— unassigned —"; }
+function licenceById(id) {
+  for (var i = 0; i < STATE.licences.length; i++) { if (STATE.licences[i].id === id) return STATE.licences[i]; }
+  return null;
+}
+function licenceLabel(id) {
+  var L = licenceById(id);
+  return L ? tradeLabel(L.trade) + " · " + (L.state || "") + " · " + personName(L.personId) : "—";
+}
+function personOptions(sel) {
+  var out = el("option", { value: "" }, "— unassigned —");
+  for (var i = 0; i < STATE.people.length; i++) {
+    out += el("option", { value: STATE.people[i].id, selected: STATE.people[i].id === sel ? "selected" : null },
+      esc(STATE.people[i].name));
+  }
+  return out;
+}
+function tradeOptions(sel) {
+  var out = "";
+  for (var i = 0; i < TRADES.length; i++) {
+    out += el("option", { value: TRADES[i].id, selected: TRADES[i].id === sel ? "selected" : null },
+      esc(TRADES[i].label));
+  }
+  return out;
+}
+function topicOptions(sel) {
+  var out = "";
+  for (var i = 0; i < CE_TOPICS.length; i++) {
+    out += el("option", { value: CE_TOPICS[i].id, selected: CE_TOPICS[i].id === sel ? "selected" : null },
+      esc(CE_TOPICS[i].label));
+  }
+  return out;
+}
+function docTypeOptions(sel) {
+  var out = "";
+  for (var i = 0; i < DOC_TYPES.length; i++) {
+    out += el("option", { value: DOC_TYPES[i].id, selected: DOC_TYPES[i].id === sel ? "selected" : null },
+      esc(DOC_TYPES[i].label));
+  }
+  return out;
+}
+
+function legalNote() {
+  return el("div", { "class": "legalbox" },
+    el("b", {}, "Confirm every requirement with your own licensing board. ") +
+    "This is a record-keeping tool. It is not legal, licensing or insurance advice and it is not " +
+    "affiliated with any licensing authority, insurer or trade association. CE hours, cycle " +
+    "lengths, licence classes and renewal windows differ by state and trade and they change. " +
+    "Everything here is editable. Defaults last reviewed " + esc(CRITERIA_REVIEWED) + ".");
+}
+
+function statusPill(s) {
+  if (s.expired) return el("span", { "class": "pill bad" }, "Expired");
+  if (s.ready && !s.expiringSoon) return el("span", { "class": "pill good" }, "Ready");
+  if (s.ready && s.expiringSoon) return el("span", { "class": "pill blue" }, "Ready, renewing soon");
+  if (s.expiringSoon) return el("span", { "class": "pill bad" }, "Due soon, short");
+  return el("span", { "class": "pill amber" }, "In progress");
+}
+function personPill(ps) {
+  if (ps.state === "expired") return el("span", { "class": "pill bad" }, "Cannot work");
+  if (ps.state === "none") return el("span", { "class": "pill" }, "No licence");
+  if (ps.state === "atrisk") return el("span", { "class": "pill bad" }, "At risk");
+  if (ps.state === "short") return el("span", { "class": "pill amber" }, "CE outstanding");
+  return el("span", { "class": "pill good" }, "Clear");
+}
+
+function listCard(title, rows, rowFn, emptyMsg, headHtml) {
+  var body;
+  if (!rows.length) {
+    body = el("div", { "class": "empty" }, el("b", {}, "Nothing here yet") + esc(emptyMsg));
+  } else {
+    var trs = "";
+    for (var i = 0; i < rows.length; i++) trs += rowFn(rows[i], i);
+    body = el("div", { "class": "tblwrap" }, el("table", {}, (headHtml || "") + trs));
+  }
+  return el("div", { "class": "card" }, el("h3", {}, esc(title)) + body);
+}
+
+/* ---------- VIEWS ---------- */
+
+function viewDash() {
+  var cc = companyCompliance(STATE.people, STATE.licences, STATE.docs, STATE.ce, todayISO());
+  var cal = renewalCalendar(STATE.licences, STATE.docs, STATE.people, todayISO());
+  var next = null;
+  for (var i = 0; i < cal.length; i++) {
+    if (cal[i].daysLeft !== null && cal[i].daysLeft >= 0) { next = cal[i]; break; }
+  }
+
+  var kpis = el("div", { "class": "grid g4" },
+    el("div", { "class": "card" },
+      el("h3", {}, "Compliance") +
+      el("div", { "class": "kpi" }, el("span", { "class": "lamp " + cc.lamp }, "") + cc.score + "%") +
+      el("div", { "class": "note" }, esc(cc.verdict))) +
+    el("div", { "class": "card" },
+      el("h3", {}, "People clear to work") +
+      el("div", { "class": "kpi " + (cc.peopleBlocked ? "bad" : "") }, cc.peopleClear + " / " + cc.people) +
+      el("div", { "class": "note" },
+        cc.peopleBlocked ? cc.peopleBlocked + " blocked by an expired licence" : "Nobody blocked")) +
+    el("div", { "class": "card" },
+      el("h3", {}, "Next expiry") +
+      el("div", { "class": "kpi gold" }, next ? next.daysLeft : "—") +
+      el("div", { "class": "note" }, next ? esc(next.label) + (next.who ? " · " + esc(next.who) : "") : "Nothing scheduled")) +
+    el("div", { "class": "card" },
+      el("h3", {}, "Documents expired") +
+      el("div", { "class": "kpi " + (cc.docsExpired ? "bad" : "") }, cc.docsExpired) +
+      el("div", { "class": "note" }, cc.docsSoon ? cc.docsSoon + " more expiring soon" : "Insurance and bonds current")));
+
+  var rosterRows = "";
+  for (var p = 0; p < STATE.people.length; p++) {
+    var person = STATE.people[p];
+    var ps = personStatus(person, STATE.licences, STATE.ce, todayISO(), warnDays());
+    var detail = [];
+    for (var q = 0; q < ps.statuses.length; q++) {
+      var s = ps.statuses[q];
+      var L = licenceById(s.licenceId);
+      detail.push(esc(tradeLabel(L.trade)) + " " + (s.expired ? "expired" :
+        (s.ready ? "ready" : s.logged + "/" + s.need + "h")));
+    }
+    rosterRows += el("tr", {},
+      el("td", {}, esc(person.name) + el("div", { "class": "note" }, esc(person.role || ""))) +
+      el("td", {}, ps.licences) +
+      el("td", {}, detail.join(" · ")) +
+      el("td", { style: "text-align:right" }, personPill(ps)));
+  }
+  var roster = STATE.people.length
+    ? el("div", { "class": "card" },
+        el("h3", {}, "Who is clear to work") +
+        el("div", { "class": "tblwrap" }, el("table", {},
+          el("tr", {}, el("th", {}, "Person") + el("th", {}, "Licences") +
+            el("th", {}, "Detail") + el("th", { style: "text-align:right" }, "Status")) + rosterRows)))
+    : el("div", { "class": "card" }, el("div", { "class": "empty" },
+        el("b", {}, "No people yet") + "Add yourself first, then anyone else you are responsible for."));
+
+  var soon = "";
+  for (var c = 0; c < cal.length && c < 8; c++) {
+    var it = cal[c];
+    var cls = it.daysLeft === null ? "" : (it.daysLeft < 0 ? "bad" : (it.daysLeft <= 90 ? "amber" : "good"));
+    soon += el("div", { "class": "barrow" },
+      el("span", { style: "font-size:12.5px" }, esc(it.label) + (it.who ? el("div", { "class": "note" }, esc(it.who)) : "")) +
+      el("span", { "class": "note" }, esc(it.date || "—")) +
+      el("span", { style: "text-align:right" },
+        el("span", { "class": "pill " + cls },
+          it.daysLeft === null ? "—" : (it.daysLeft < 0 ? Math.abs(it.daysLeft) + "d ago" : it.daysLeft + "d"))));
+  }
+  var soonCard = el("div", { "class": "card" },
+    el("h3", {}, "Next eight expiries") + (soon || el("div", { "class": "empty" }, "Nothing scheduled")));
+
+  return el("h2", {}, "Dashboard") +
+    el("div", { "class": "sub" }, "Whether the business is compliant today, and who is about to stop being.") +
+    legalNote() + kpis + el("div", { style: "height:14px" }, "") +
+    el("div", { "class": "grid g2" }, roster + soonCard);
+}
+
+function viewPeople() {
+  var head = el("tr", {},
+    el("th", {}, "Name") + el("th", {}, "Role") + el("th", {}, "Licences") +
+    el("th", {}, "Contact") + el("th", {}, "Status") + el("th", { style: "text-align:right" }, ""));
+  var body = listCard("Roster", STATE.people, function (p) {
+    var ps = personStatus(p, STATE.licences, STATE.ce, todayISO(), warnDays());
+    return el("tr", {},
+      el("td", {}, esc(p.name) + (p.notes ? el("div", { "class": "note" }, esc(p.notes)) : "")) +
+      el("td", {}, esc(p.role || "—")) +
+      el("td", {}, ps.licences + el("div", { "class": "note" },
+        ps.expired ? ps.expired + " expired" : (ps.notReady ? ps.notReady + " with CE outstanding" : "all current"))) +
+      el("td", {}, esc(p.email || "") + (p.phone ? el("div", { "class": "note" }, esc(p.phone)) : "")) +
+      el("td", {}, personPill(ps)) +
+      el("td", { style: "text-align:right;white-space:nowrap" },
+        el("button", { "class": "btn sm", "data-edit-p": p.id }, "Edit") + " " +
+        el("button", { "class": "btn sm danger", "data-del-p": p.id }, "Delete")));
+  }, "Add yourself, then anyone else whose licence you are responsible for.", head);
+
+  var settings = el("div", { "class": "card" },
+    el("h3", {}, "Company and warning windows") +
+    el("div", { "class": "fgrid" },
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Business name") +
+        el("input", { id: "coName", value: esc(STATE.company.name || "") }, "")) +
+      el("div", {}, el("label", {}, "Warn me this many days before a licence expires") +
+        el("input", { id: "coWarn", type: "number", min: "1", value: esc(STATE.company.warnDays) }, "")) +
+      el("div", {}, el("label", {}, "Warn me this many days before a document expires") +
+        el("input", { id: "coDocWarn", type: "number", min: "1", value: esc(STATE.company.docWarnDays) }, ""))) +
+    el("div", { "class": "row", style: "margin-top:12px" },
+      el("button", { "class": "btn pri", "data-save-company": "1" }, "Save")));
+
+  return el("h2", {}, "People") +
+    el("div", { "class": "sub" }, "One person, or a whole crew. A licence always belongs to someone.") +
+    el("div", { "class": "row", style: "margin-bottom:12px" },
+      el("button", { "class": "btn pri", "data-new-p": "1" }, "+ Add person")) +
+    body + el("div", { style: "height:14px" }, "") + settings;
+}
+
+function viewLicences() {
+  var head = el("tr", {},
+    el("th", {}, "Holder") + el("th", {}, "Trade") + el("th", {}, "State / class") +
+    el("th", {}, "Number") + el("th", {}, "CE") + el("th", {}, "Expiry") +
+    el("th", {}, "Status") + el("th", { style: "text-align:right" }, ""));
+  var body = listCard("Licences", STATE.licences, function (L) {
+    var s = licenceStatus(L, STATE.ce, todayISO(), warnDays());
+    return el("tr", {},
+      el("td", {}, esc(personName(L.personId))) +
+      el("td", {}, esc(tradeLabel(L.trade))) +
+      el("td", {}, esc(L.state || "—") + el("div", { "class": "note" }, esc(L.classLevel || ""))) +
+      el("td", {}, esc(L.number || "—")) +
+      el("td", {}, s.logged + " / " + s.need + " h" +
+        (s.unverified > 0 ? el("div", { "class": "note" }, s.unverified + "h unproven") : "")) +
+      el("td", {}, esc(s.expiry || "—") + el("div", { "class": "note" },
+        s.daysLeft === null ? "" : (s.daysLeft < 0 ? Math.abs(s.daysLeft) + " days ago" : s.daysLeft + " days"))) +
+      el("td", {}, statusPill(s)) +
+      el("td", { style: "text-align:right;white-space:nowrap" },
+        el("button", { "class": "btn sm", "data-edit-l": L.id }, "Edit") + " " +
+        el("button", { "class": "btn sm danger", "data-del-l": L.id }, "Delete")));
+  }, "Add a licence and assign it to a person.", head);
+
+  return el("h2", {}, "Licences") +
+    el("div", { "class": "sub" }, "Every licence, whose it is, and how much CE is still outstanding on it.") +
+    el("div", { "class": "row", style: "margin-bottom:12px" },
+      el("button", { "class": "btn pri", "data-new-l": "1" }, "+ Add licence")) +
+    body;
+}
+
+function viewCE() {
+  var rows = STATE.ce.slice().sort(function (a, b) { return String(b.date).localeCompare(String(a.date)); });
+  var head = el("tr", {},
+    el("th", {}, "Date") + el("th", {}, "Course") + el("th", {}, "Topic") + el("th", {}, "Hours") +
+    el("th", {}, "Counts toward") + el("th", {}, "Certificate") + el("th", { style: "text-align:right" }, ""));
+  var body = listCard("Continuing education", rows, function (r) {
+    var chips = "";
+    var list = r.licences || [];
+    for (var i = 0; i < list.length; i++) {
+      chips += el("span", { "class": "pill blue", style: "margin-right:4px" }, esc(licenceLabel(list[i])));
+    }
+    if (!list.length) chips = el("span", { "class": "pill bad" }, "Not assigned");
+    return el("tr", {},
+      el("td", {}, esc(r.date)) +
+      el("td", {}, esc(r.title || "—") + (r.provider ? el("div", { "class": "note" }, esc(r.provider)) : "")) +
+      el("td", {}, esc(topicLabel(r.topic))) +
+      el("td", {}, round1(num(r.hours))) +
+      el("td", {}, chips) +
+      el("td", {}, r.certificate === "1"
+        ? el("span", { "class": "pill good" }, "On file")
+        : el("span", { "class": "pill bad" }, "Missing")) +
+      el("td", { style: "text-align:right;white-space:nowrap" },
+        el("button", { "class": "btn sm", "data-edit-e": r.id }, "Edit") + " " +
+        el("button", { "class": "btn sm danger", "data-del-e": r.id }, "Delete")));
+  }, "Log the first course.", head);
+
+  return el("h2", {}, "CE Log") +
+    el("div", { "class": "sub" }, "One course can cover two people's licences if they both attended — tick both.") +
+    el("div", { "class": "row", style: "margin-bottom:12px" },
+      el("button", { "class": "btn pri", "data-new-e": "1" }, "+ Add course")) +
+    body;
+}
+
+function viewRequirements() {
+  var cards = "";
+  for (var i = 0; i < STATE.licences.length; i++) {
+    var L = STATE.licences[i];
+    var s = licenceStatus(L, STATE.ce, todayISO(), warnDays());
+    var rows = "";
+    var mins = L.topicMins || [];
+    for (var m = 0; m < mins.length; m++) {
+      var have = s.byTopic[mins[m].topic] || 0;
+      rows += el("tr", {},
+        el("td", {}, esc(topicLabel(mins[m].topic))) +
+        el("td", {}, mins[m].hours + " h") +
+        el("td", {}, round1(have) + " h") +
+        el("td", { style: "text-align:right" },
+          el("span", { "class": "pill " + (have >= num(mins[m].hours) ? "good" : "bad") },
+            have >= num(mins[m].hours) ? "Met" : "Short")) +
+        el("td", { style: "text-align:right" },
+          el("button", { "class": "btn sm danger", "data-del-tm": L.id + "|" + m }, "Remove")));
+    }
+    var table = mins.length
+      ? el("div", { "class": "tblwrap" }, el("table", {},
+          el("tr", {}, el("th", {}, "Topic") + el("th", {}, "Required") + el("th", {}, "Logged") +
+            el("th", { style: "text-align:right" }, "Status") + el("th", {}, "")) + rows))
+      : el("div", { "class": "empty" }, "No topic minimums set for this licence.");
+    cards += el("div", { "class": "card" },
+      el("h3", {}, esc(personName(L.personId)) + " — " + esc(tradeLabel(L.trade)) + " " + esc(L.state || "")) +
+      table +
+      el("div", { "class": "row", style: "margin-top:10px" },
+        el("select", { id: "tm_" + L.id, style: "max-width:230px" }, topicOptions("")) +
+        el("input", { id: "tmh_" + L.id, type: "number", step: "0.5", min: "0",
+          placeholder: "hours", style: "max-width:100px" }, "") +
+        el("button", { "class": "btn", "data-add-tm": L.id }, "Add minimum")));
+  }
+  if (!STATE.licences.length) {
+    cards = el("div", { "class": "card" }, el("div", { "class": "empty" },
+      el("b", {}, "No licences yet") + "Add a licence first, then set its topic minimums."));
+  }
+
+  return el("h2", {}, "Requirements") +
+    el("div", { "class": "sub" }, "Code hours, business-and-law hours, safety hours — set per licence.") +
+    legalNote() + cards;
+}
+
+function viewDocs() {
+  var rows = STATE.docs.slice().sort(function (a, b) { return String(a.expiry).localeCompare(String(b.expiry)); });
+  var head = el("tr", {},
+    el("th", {}, "Document") + el("th", {}, "Holder") + el("th", {}, "Provider") +
+    el("th", {}, "Number") + el("th", {}, "Expires") + el("th", {}, "Status") +
+    el("th", { style: "text-align:right" }, ""));
+  var body = listCard("Insurance, bonds and registrations", rows, function (d) {
+    var st = docStatus(d, todayISO(), docWarnDays());
+    var pill = st.state === "expired" ? el("span", { "class": "pill bad" }, "Expired")
+      : st.state === "soon" ? el("span", { "class": "pill amber" }, st.daysLeft + " days")
+      : st.state === "ok" ? el("span", { "class": "pill good" }, "Current")
+      : el("span", { "class": "pill" }, "No date");
+    return el("tr", {},
+      el("td", {}, esc(docTypeLabel(d.type)) + (d.notes ? el("div", { "class": "note" }, esc(d.notes)) : "")) +
+      el("td", {}, esc(d.holder || "Company")) +
+      el("td", {}, esc(d.provider || "—")) +
+      el("td", {}, esc(d.number || "—")) +
+      el("td", {}, esc(d.expiry || "—")) +
+      el("td", {}, pill) +
+      el("td", { style: "text-align:right;white-space:nowrap" },
+        el("button", { "class": "btn sm", "data-edit-d": d.id }, "Edit") + " " +
+        el("button", { "class": "btn sm danger", "data-del-d": d.id }, "Delete")));
+  }, "Add your liability insurance, workers' comp and bond.", head);
+
+  return el("h2", {}, "Documents") +
+    el("div", { "class": "sub" }, "A lapsed bond stops a permit just as fast as a lapsed licence.") +
+    el("div", { "class": "row", style: "margin-bottom:12px" },
+      el("button", { "class": "btn pri", "data-new-d": "1" }, "+ Add document")) +
+    body;
+}
+
+function viewCalendar() {
+  var cal = renewalCalendar(STATE.licences, STATE.docs, STATE.people, todayISO());
+  var rows = "";
+  for (var i = 0; i < cal.length; i++) {
+    var it = cal[i];
+    var pill;
+    if (it.daysLeft === null) pill = el("span", { "class": "pill" }, "No date");
+    else if (it.daysLeft < 0) pill = el("span", { "class": "pill bad" }, Math.abs(it.daysLeft) + " days ago");
+    else if (it.daysLeft <= 90) pill = el("span", { "class": "pill amber" }, "in " + it.daysLeft + " days");
+    else pill = el("span", { "class": "pill good" }, "in " + it.daysLeft + " days");
+    rows += el("tr", {},
+      el("td", {}, esc(it.date || "—")) +
+      el("td", {}, esc(it.label) + (it.detail ? el("div", { "class": "note" }, esc(it.detail)) : "")) +
+      el("td", {}, esc(it.who || "—")) +
+      el("td", {}, el("span", { "class": "pill " + (it.kind === "licence" ? "blue" : "") },
+        it.kind === "licence" ? "Licence" : "Document")) +
+      el("td", { style: "text-align:right" }, pill));
+  }
+  var head = el("tr", {},
+    el("th", {}, "Date") + el("th", {}, "What") + el("th", {}, "Whose") +
+    el("th", {}, "Kind") + el("th", { style: "text-align:right" }, "When"));
+  var table = cal.length
+    ? el("div", { "class": "tblwrap" }, el("table", {}, head + rows))
+    : el("div", { "class": "empty" }, el("b", {}, "Nothing scheduled") + "Add licences and documents.");
+
+  return el("h2", {}, "Renewal Calendar") +
+    el("div", { "class": "sub" }, "Licences and company documents in one list, soonest first.") +
+    el("div", { "class": "card" }, el("h3", {}, "Everything that expires") + table);
+}
+
+function viewReports() {
+  var cc = companyCompliance(STATE.people, STATE.licences, STATE.docs, STATE.ce, todayISO());
+
+  var rows = "";
+  for (var i = 0; i < STATE.licences.length; i++) {
+    var L = STATE.licences[i];
+    var s = licenceStatus(L, STATE.ce, todayISO(), warnDays());
+    rows += el("tr", {},
+      el("td", {}, esc(personName(L.personId))) +
+      el("td", {}, esc(tradeLabel(L.trade)) + " · " + esc(L.state || "")) +
+      el("td", {}, s.logged + " / " + s.need) +
+      el("td", {}, s.unverified) +
+      el("td", {}, s.topicsMet ? "Met" : "Short") +
+      el("td", {}, esc(s.expiry || "—")) +
+      el("td", { style: "text-align:right" }, statusPill(s)));
+  }
+  var head = el("tr", {},
+    el("th", {}, "Holder") + el("th", {}, "Licence") + el("th", {}, "CE hours") +
+    el("th", {}, "Unproven") + el("th", {}, "Topics") + el("th", {}, "Expiry") +
+    el("th", { style: "text-align:right" }, "Status"));
+  var table = STATE.licences.length
+    ? el("div", { "class": "tblwrap" }, el("table", {}, head + rows))
+    : el("div", { "class": "empty" }, el("b", {}, "No licences") + "Add one to build a report.");
+
+  var sel = PACKLIC;
+  var found = false;
+  for (var f = 0; f < STATE.licences.length; f++) { if (STATE.licences[f].id === sel) found = true; }
+  if (!found && STATE.licences.length) sel = STATE.licences[0].id;
+
+  var sheet = "";
+  if (sel) {
+    var L2 = licenceById(sel);
+    var s2 = licenceStatus(L2, STATE.ce, todayISO(), warnDays());
+    var acts = ceForLicence(STATE.ce, L2).sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
+    var aRows = "";
+    for (var k = 0; k < acts.length; k++) {
+      aRows += el("tr", {},
+        el("td", {}, esc(acts[k].date)) +
+        el("td", {}, esc(acts[k].title || "—")) +
+        el("td", {}, esc(topicLabel(acts[k].topic))) +
+        el("td", {}, round1(num(acts[k].hours))) +
+        el("td", {}, esc(acts[k].provider || "—")) +
+        el("td", {}, acts[k].certificate === "1" ? "Yes" : "No"));
+    }
+    var tRows = "";
+    for (var m = 0; m < s2.topicChecks.length; m++) {
+      tRows += el("tr", {},
+        el("td", {}, esc(s2.topicChecks[m].label)) +
+        el("td", {}, s2.topicChecks[m].need + " h") +
+        el("td", {}, round1(s2.topicChecks[m].have) + " h") +
+        el("td", {}, s2.topicChecks[m].ok ? "Met" : "Short"));
+    }
+    var opts = "";
+    for (var o = 0; o < STATE.licences.length; o++) {
+      var LO = STATE.licences[o];
+      opts += el("option", { value: LO.id, selected: LO.id === sel ? "selected" : null },
+        esc(personName(LO.personId) + " — " + tradeLabel(LO.trade)));
+    }
+    sheet = el("div", { "class": "row noprint", style: "margin:14px 0" },
+        el("select", { "data-pack-lic": "1", style: "max-width:300px" }, opts) +
+        el("button", { "class": "btn pri", "data-print": "1" }, "Print this record")) +
+      el("div", { "class": "sheetprint", id: "packSheet" },
+        el("h4", {}, "Continuing Education Record") +
+        el("div", { "class": "psub" },
+          esc(STATE.company.name || "") + " · " + esc(personName(L2.personId)) +
+          " · prepared " + esc(todayISO())) +
+        el("table", {},
+          el("tr", {}, el("th", {}, "Licence") + el("td", {},
+            esc(tradeLabel(L2.trade)) + (L2.classLevel ? " — " + esc(L2.classLevel) : ""))) +
+          el("tr", {}, el("th", {}, "State") + el("td", {}, esc(L2.state || "—"))) +
+          el("tr", {}, el("th", {}, "Number") + el("td", {}, esc(L2.number || "—"))) +
+          el("tr", {}, el("th", {}, "Cycle") + el("td", {}, esc(s2.cycleStart) + " to " + esc(s2.cycleEnd))) +
+          el("tr", {}, el("th", {}, "Expires") + el("td", {}, esc(s2.expiry || "—"))) +
+          el("tr", {}, el("th", {}, "Hours required") + el("td", {}, s2.need)) +
+          el("tr", {}, el("th", {}, "Hours logged") + el("td", {}, s2.logged)) +
+          el("tr", {}, el("th", {}, "Hours with a certificate") + el("td", {}, round1(s2.logged - s2.unverified)))) +
+        (tRows ? el("h5", {}, "Topic minimums") +
+          el("table", {}, el("tr", {}, el("th", {}, "Topic") + el("th", {}, "Required") +
+            el("th", {}, "Logged") + el("th", {}, "Status")) + tRows) : "") +
+        el("h5", {}, "Courses in this cycle") +
+        el("table", {},
+          el("tr", {}, el("th", {}, "Date") + el("th", {}, "Course") + el("th", {}, "Topic") +
+            el("th", {}, "Hours") + el("th", {}, "Provider") + el("th", {}, "Certificate")) + aRows));
+  }
+
+  return el("h2", {}, "Reports") +
+    el("div", { "class": "sub" }, "Every licence side by side, then a printable record per person.") +
+    el("div", { "class": "grid g2 noprint", style: "margin-bottom:14px" },
+      el("div", { "class": "card" },
+        el("h3", {}, "Company position") +
+        el("div", { "class": "kpi" }, el("span", { "class": "lamp " + cc.lamp }, "") + esc(cc.verdict)) +
+        el("div", { "class": "note" },
+          cc.peopleClear + " of " + cc.people + " people clear · " +
+          cc.licShort + " licence(s) with CE outstanding · " +
+          cc.docsExpired + " document(s) expired")) +
+      el("div", { "class": "card" },
+        el("h3", {}, "Backup and export") +
+        el("p", { "class": "hint" }, "Everything stays on this computer. Export before you clear browser data.") +
+        el("div", { "class": "row" },
+          el("button", { "class": "btn pri", "data-export-json": "1" }, "Download backup") +
+          el("button", { "class": "btn", "data-export-csv": "1" }, "Export CE CSV") +
+          el("button", { "class": "btn", "data-export-lic": "1" }, "Export licences CSV") +
+          el("button", { "class": "btn", "data-import": "1" }, "Restore backup") +
+          el("button", { "class": "btn danger", "data-reset": "1" }, "Start empty")) +
+        el("input", { type: "file", id: "importFile", accept: ".json", style: "display:none" }, ""))) +
+    el("div", { "class": "card noprint" }, el("h3", {}, "All licences") + table) +
+    sheet;
+}
+
+/* ---------- MODALS ---------- */
+
+function modalPerson() {
+  var p = null;
+  if (EDIT) p = personById(EDIT);
+  p = p || { name: "", role: "", email: "", phone: "", notes: "" };
+  return el("div", { "class": "sheet" },
+    el("h3", {}, EDIT ? "Edit person" : "Add person") +
+    el("div", { "class": "fgrid" },
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Name") + el("input", { id: "pName", value: esc(p.name) }, "")) +
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Role") + el("input", { id: "pRole", value: esc(p.role || "") }, "")) +
+      el("div", {}, el("label", {}, "Email") + el("input", { id: "pEmail", value: esc(p.email || "") }, "")) +
+      el("div", {}, el("label", {}, "Phone") + el("input", { id: "pPhone", value: esc(p.phone || "") }, "")) +
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Notes") + el("textarea", { id: "pNotes" }, esc(p.notes || "")))) +
+    el("div", { "class": "row", style: "margin-top:14px;justify-content:flex-end" },
+      el("button", { "class": "btn", "data-close": "1" }, "Cancel") +
+      el("button", { "class": "btn pri", "data-save-p": "1" }, "Save")));
+}
+
+function modalLicence() {
+  var L = null;
+  if (EDIT) L = licenceById(EDIT);
+  L = L || { personId: "", trade: "electrical", state: "", classLevel: "", number: "",
+             cycleStart: todayISO(), cycleMonths: 24, ceHours: 16, expiry: "", topicMins: [], notes: "" };
+  return el("div", { "class": "sheet" },
+    el("h3", {}, EDIT ? "Edit licence" : "Add licence") +
+    el("div", { "class": "fgrid" },
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Whose licence is it?") +
+        el("select", { id: "lPerson" }, personOptions(L.personId))) +
+      el("div", {}, el("label", {}, "Trade") + el("select", { id: "lTrade" }, tradeOptions(L.trade))) +
+      el("div", {}, el("label", {}, "State") + el("input", { id: "lState", value: esc(L.state || "") }, "")) +
+      el("div", {}, el("label", {}, "Class or level") + el("input", { id: "lClass", value: esc(L.classLevel || "") }, "")) +
+      el("div", {}, el("label", {}, "Licence number") + el("input", { id: "lNumber", value: esc(L.number || "") }, "")) +
+      el("div", {}, el("label", {}, "Cycle start") + el("input", { id: "lCycleStart", type: "date", value: esc(L.cycleStart) }, "")) +
+      el("div", {}, el("label", {}, "Cycle length (months)") + el("input", { id: "lCycleMonths", type: "number", min: "1", value: esc(L.cycleMonths) }, "")) +
+      el("div", {}, el("label", {}, "CE hours required") + el("input", { id: "lCeHours", type: "number", min: "0", step: "0.5", value: esc(L.ceHours) }, "")) +
+      el("div", {}, el("label", {}, "Licence expires") + el("input", { id: "lExpiry", type: "date", value: esc(L.expiry || "") }, "")) +
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Notes") + el("textarea", { id: "lNotes" }, esc(L.notes || "")))) +
+    el("p", { "class": "hint", style: "margin-top:10px" },
+      "Take the hours and cycle length from your own board. Topic minimums are set on the " +
+      "Requirements tab once this is saved.") +
+    el("div", { "class": "row", style: "margin-top:8px;justify-content:flex-end" },
+      el("button", { "class": "btn", "data-close": "1" }, "Cancel") +
+      el("button", { "class": "btn pri", "data-save-l": "1" }, "Save")));
+}
+
+function modalCE() {
+  var r = null;
+  if (EDIT) { for (var i = 0; i < STATE.ce.length; i++) { if (STATE.ce[i].id === EDIT) r = STATE.ce[i]; } }
+  r = r || { date: todayISO(), title: "", topic: "code", hours: "", provider: "",
+             certificate: "0", licences: [], notes: "" };
+  var checks = "";
+  for (var j = 0; j < STATE.licences.length; j++) {
+    var L = STATE.licences[j];
+    var on = false;
+    var list = r.licences || [];
+    for (var k = 0; k < list.length; k++) { if (list[k] === L.id) on = true; }
+    checks += el("label", { style: "display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-size:13px" },
+      el("input", { type: "checkbox", "data-lic-check": L.id, checked: on ? "checked" : null, style: "width:auto;margin:0" }, "") +
+      el("span", {}, esc(personName(L.personId) + " — " + tradeLabel(L.trade) + " " + (L.state || ""))));
+  }
+  if (!STATE.licences.length) checks = el("p", { "class": "hint" }, "Add a licence first.");
+
+  return el("div", { "class": "sheet" },
+    el("h3", {}, EDIT ? "Edit course" : "Add CE course") +
+    el("div", { "class": "fgrid" },
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Course title") + el("input", { id: "eTitle", value: esc(r.title || "") }, "")) +
+      el("div", {}, el("label", {}, "Date") + el("input", { id: "eDate", type: "date", value: esc(r.date) }, "")) +
+      el("div", {}, el("label", {}, "Hours") + el("input", { id: "eHours", type: "number", step: "0.25", min: "0", value: esc(r.hours) }, "")) +
+      el("div", {}, el("label", {}, "Topic") + el("select", { id: "eTopic" }, topicOptions(r.topic))) +
+      el("div", {}, el("label", {}, "Certificate on file?") +
+        el("select", { id: "eCert" },
+          el("option", { value: "0", selected: r.certificate !== "1" ? "selected" : null }, "No") +
+          el("option", { value: "1", selected: r.certificate === "1" ? "selected" : null }, "Yes"))) +
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Provider") + el("input", { id: "eProv", value: esc(r.provider || "") }, "")) +
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Notes") + el("textarea", { id: "eNotes" }, esc(r.notes || "")))) +
+    el("div", { style: "margin-top:12px" },
+      el("label", {}, "Counts toward which licences?") + checks) +
+    el("div", { "class": "row", style: "margin-top:12px;justify-content:flex-end" },
+      el("button", { "class": "btn", "data-close": "1" }, "Cancel") +
+      el("button", { "class": "btn pri", "data-save-e": "1" }, "Save")));
+}
+
+function modalDoc() {
+  var d = null;
+  if (EDIT) { for (var i = 0; i < STATE.docs.length; i++) { if (STATE.docs[i].id === EDIT) d = STATE.docs[i]; } }
+  d = d || { type: "liability", holder: "Company", provider: "", number: "",
+             issued: todayISO(), expiry: "", notes: "" };
+  return el("div", { "class": "sheet" },
+    el("h3", {}, EDIT ? "Edit document" : "Add document") +
+    el("div", { "class": "fgrid" },
+      el("div", {}, el("label", {}, "Type") + el("select", { id: "dType" }, docTypeOptions(d.type))) +
+      el("div", {}, el("label", {}, "Holder") + el("input", { id: "dHolder", value: esc(d.holder || "") }, "")) +
+      el("div", {}, el("label", {}, "Provider") + el("input", { id: "dProvider", value: esc(d.provider || "") }, "")) +
+      el("div", {}, el("label", {}, "Policy / number") + el("input", { id: "dNumber", value: esc(d.number || "") }, "")) +
+      el("div", {}, el("label", {}, "Issued") + el("input", { id: "dIssued", type: "date", value: esc(d.issued || "") }, "")) +
+      el("div", {}, el("label", {}, "Expires") + el("input", { id: "dExpiry", type: "date", value: esc(d.expiry || "") }, "")) +
+      el("div", { style: "grid-column:1/-1" }, el("label", {}, "Notes") + el("textarea", { id: "dNotes" }, esc(d.notes || "")))) +
+    el("div", { "class": "row", style: "margin-top:14px;justify-content:flex-end" },
+      el("button", { "class": "btn", "data-close": "1" }, "Cancel") +
+      el("button", { "class": "btn pri", "data-save-d": "1" }, "Save")));
+}
+
+/* ---------- RENDER ---------- */
+
+function render() {
+  var tabs = "";
+  for (var i = 0; i < TABS.length; i++) {
+    tabs += el("button", { "class": "tab" + (VIEW === TABS[i][0] ? " on" : ""), "data-tab": TABS[i][0] }, TABS[i][1]);
+  }
+  document.getElementById("tabs").innerHTML = tabs;
+
+  var html = "";
+  if (VIEW === "dash") html = viewDash();
+  else if (VIEW === "people") html = viewPeople();
+  else if (VIEW === "licences") html = viewLicences();
+  else if (VIEW === "ce") html = viewCE();
+  else if (VIEW === "requirements") html = viewRequirements();
+  else if (VIEW === "docs") html = viewDocs();
+  else if (VIEW === "calendar") html = viewCalendar();
+  else if (VIEW === "reports") html = viewReports();
+
+  if (MODAL === "person") html += el("div", { "class": "modal", "data-modal": "1" }, modalPerson());
+  else if (MODAL === "licence") html += el("div", { "class": "modal", "data-modal": "1" }, modalLicence());
+  else if (MODAL === "ce") html += el("div", { "class": "modal", "data-modal": "1" }, modalCE());
+  else if (MODAL === "doc") html += el("div", { "class": "modal", "data-modal": "1" }, modalDoc());
+
+  document.getElementById("app").innerHTML = html;
+}
+
+function val(id) { var n = document.getElementById(id); return n ? n.value : ""; }
+
+function download(name, text, type) {
+  var blob = new Blob([text], { type: type || "application/json" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+document.addEventListener("click", function (ev) {
+  var t = ev.target;
+  var g = function (attr) {
+    var n = t;
+    while (n && n !== document) {
+      if (n.getAttribute && n.getAttribute(attr) !== null) return n.getAttribute(attr);
+      n = n.parentNode;
+    }
+    return null;
+  };
+
+  if (g("data-tab")) { VIEW = g("data-tab"); MODAL = null; EDIT = null; render(); return; }
+  if (g("data-dark")) {
+    STATE.settings.dark = STATE.settings.dark === "1" ? "0" : "1";
+    document.documentElement.setAttribute("data-dark", STATE.settings.dark);
+    save(); render(); return;
+  }
+  if (g("data-close") || (g("data-modal") && t.className === "modal")) { MODAL = null; EDIT = null; render(); return; }
+  if (g("data-print")) { window.print(); return; }
+
+  /* people */
+  if (g("data-new-p")) { MODAL = "person"; EDIT = null; render(); return; }
+  if (g("data-edit-p")) { MODAL = "person"; EDIT = g("data-edit-p"); render(); return; }
+  if (g("data-del-p")) {
+    var idp = g("data-del-p");
+    if (confirm("Delete this person? Their licences stay but become unassigned.")) {
+      STATE.people = STATE.people.filter(function (x) { return x.id !== idp; });
+      for (var i = 0; i < STATE.licences.length; i++) {
+        if (STATE.licences[i].personId === idp) STATE.licences[i].personId = "";
+      }
+      save(); render();
+    }
+    return;
+  }
+  if (g("data-save-p")) {
+    var pn = val("pName").trim();
+    if (!pn) { alert("Give this person a name."); return; }
+    var prec = { id: EDIT || uid(), name: pn, role: val("pRole"), email: val("pEmail"),
+                 phone: val("pPhone"), notes: val("pNotes") };
+    if (EDIT) { STATE.people = STATE.people.map(function (x) { return x.id === EDIT ? prec : x; }); }
+    else { STATE.people.push(prec); }
+    MODAL = null; EDIT = null; save(); render(); return;
+  }
+  if (g("data-save-company")) {
+    STATE.company = { name: val("coName"), warnDays: num(val("coWarn")) || 90,
+                      docWarnDays: num(val("coDocWarn")) || 60 };
+    save(); render(); return;
+  }
+
+  /* licences */
+  if (g("data-new-l")) { MODAL = "licence"; EDIT = null; render(); return; }
+  if (g("data-edit-l")) { MODAL = "licence"; EDIT = g("data-edit-l"); render(); return; }
+  if (g("data-del-l")) {
+    var idl = g("data-del-l");
+    if (confirm("Delete this licence? CE entries stay but lose this assignment.")) {
+      STATE.licences = STATE.licences.filter(function (x) { return x.id !== idl; });
+      for (var j = 0; j < STATE.ce.length; j++) {
+        STATE.ce[j].licences = (STATE.ce[j].licences || []).filter(function (x) { return x !== idl; });
+      }
+      save(); render();
+    }
+    return;
+  }
+  if (g("data-save-l")) {
+    var st = val("lState").trim();
+    if (!st) { alert("Which state issued this licence?"); return; }
+    var existing = EDIT ? licenceById(EDIT) : null;
+    var lrec = { id: EDIT || uid(), personId: val("lPerson"), trade: val("lTrade"), state: st,
+                 classLevel: val("lClass"), number: val("lNumber"),
+                 cycleStart: val("lCycleStart") || todayISO(),
+                 cycleMonths: num(val("lCycleMonths")) || 24, ceHours: num(val("lCeHours")),
+                 expiry: val("lExpiry"),
+                 topicMins: existing ? (existing.topicMins || []) : [], notes: val("lNotes") };
+    if (EDIT) { STATE.licences = STATE.licences.map(function (x) { return x.id === EDIT ? lrec : x; }); }
+    else { STATE.licences.push(lrec); }
+    MODAL = null; EDIT = null; save(); render(); return;
+  }
+
+  /* topic minimums */
+  if (g("data-add-tm")) {
+    var lid = g("data-add-tm");
+    var L2 = licenceById(lid);
+    if (!L2) return;
+    var hours = num(val("tmh_" + lid));
+    if (hours <= 0) { alert("How many hours are required in that topic?"); return; }
+    if (!L2.topicMins) L2.topicMins = [];
+    L2.topicMins.push({ topic: val("tm_" + lid), hours: hours });
+    save(); render(); return;
+  }
+  if (g("data-del-tm")) {
+    var parts = g("data-del-tm").split("|");
+    var L3 = licenceById(parts[0]);
+    if (L3 && L3.topicMins) { L3.topicMins.splice(Number(parts[1]), 1); save(); render(); }
+    return;
+  }
+
+  /* CE */
+  if (g("data-new-e")) { MODAL = "ce"; EDIT = null; render(); return; }
+  if (g("data-edit-e")) { MODAL = "ce"; EDIT = g("data-edit-e"); render(); return; }
+  if (g("data-del-e")) {
+    var ide = g("data-del-e");
+    if (confirm("Delete this course?")) {
+      STATE.ce = STATE.ce.filter(function (x) { return x.id !== ide; });
+      save(); render();
+    }
+    return;
+  }
+  if (g("data-save-e")) {
+    var eh = num(val("eHours"));
+    if (eh <= 0) { alert("Enter the course hours."); return; }
+    var boxes = document.querySelectorAll("[data-lic-check]");
+    var lics = [];
+    for (var b = 0; b < boxes.length; b++) {
+      if (boxes[b].checked) lics.push(boxes[b].getAttribute("data-lic-check"));
+    }
+    if (!lics.length && STATE.licences.length) {
+      if (!confirm("This course is not assigned to any licence, so it will not count. Save anyway?")) return;
+    }
+    var erec = { id: EDIT || uid(), date: val("eDate") || todayISO(), title: val("eTitle"),
+                 topic: val("eTopic"), hours: eh, provider: val("eProv"),
+                 certificate: val("eCert"), licences: lics, notes: val("eNotes") };
+    if (EDIT) { STATE.ce = STATE.ce.map(function (x) { return x.id === EDIT ? erec : x; }); }
+    else { if(demoLimitReached()) return; STATE.ce.push(erec); }
+    MODAL = null; EDIT = null; save(); render(); return;
+  }
+
+  /* documents */
+  if (g("data-new-d")) { MODAL = "doc"; EDIT = null; render(); return; }
+  if (g("data-edit-d")) { MODAL = "doc"; EDIT = g("data-edit-d"); render(); return; }
+  if (g("data-del-d")) {
+    var idd = g("data-del-d");
+    if (confirm("Delete this document?")) {
+      STATE.docs = STATE.docs.filter(function (x) { return x.id !== idd; });
+      save(); render();
+    }
+    return;
+  }
+  if (g("data-save-d")) {
+    var drec = { id: EDIT || uid(), type: val("dType"), holder: val("dHolder"),
+                 provider: val("dProvider"), number: val("dNumber"),
+                 issued: val("dIssued"), expiry: val("dExpiry"), notes: val("dNotes") };
+    if (EDIT) { STATE.docs = STATE.docs.map(function (x) { return x.id === EDIT ? drec : x; }); }
+    else { STATE.docs.push(drec); }
+    MODAL = null; EDIT = null; save(); render(); return;
+  }
+
+  /* export */
+  if (g("data-export-json")) {
+    download("licence-compliance-backup-" + todayISO() + ".json", JSON.stringify(STATE, null, 2));
+    return;
+  }
+  if (g("data-export-csv")) {
+    var rows = [["Date", "Course", "Topic", "Hours", "Provider", "Certificate", "Counts toward", "Notes"]];
+    var cs = STATE.ce.slice().sort(function (a, b) { return String(a.date).localeCompare(String(b.date)); });
+    for (var i2 = 0; i2 < cs.length; i2++) {
+      var names = [];
+      var ll = cs[i2].licences || [];
+      for (var j2 = 0; j2 < ll.length; j2++) names.push(licenceLabel(ll[j2]));
+      rows.push([cs[i2].date, cs[i2].title || "", topicLabel(cs[i2].topic), cs[i2].hours,
+        cs[i2].provider || "", cs[i2].certificate === "1" ? "Yes" : "No",
+        names.join(" / "), cs[i2].notes || ""]);
+    }
+    download("ce-log-" + todayISO() + ".csv", toCSV(rows), "text/csv");
+    return;
+  }
+  if (g("data-export-lic")) {
+    var lrows = [["Holder", "Trade", "State", "Class", "Number", "Cycle start",
+                  "Cycle months", "CE required", "CE logged", "Unproven", "Expiry", "Status"]];
+    for (var k2 = 0; k2 < STATE.licences.length; k2++) {
+      var LL = STATE.licences[k2];
+      var ss = licenceStatus(LL, STATE.ce, todayISO(), warnDays());
+      lrows.push([personName(LL.personId), tradeLabel(LL.trade), LL.state || "", LL.classLevel || "",
+        LL.number || "", LL.cycleStart, LL.cycleMonths, ss.need, ss.logged, ss.unverified,
+        ss.expiry || "", ss.expired ? "Expired" : (ss.ready ? "Ready" : "Outstanding")]);
+    }
+    download("licences-" + todayISO() + ".csv", toCSV(lrows), "text/csv");
+    return;
+  }
+  if (g("data-reset")) {
+    if (confirm("Clear everything and start empty? Export a backup first if you need one.")) {
+      STATE = blank(); save(); VIEW = "dash"; render();
+    }
+    return;
+  }
+  if (g("data-import")) {
+    var f = document.getElementById("importFile");
+    if (f) f.click();
+    return;
+  }
+});
+
+document.addEventListener("change", function (ev) {
+  var t = ev.target;
+  if (t && t.getAttribute && t.getAttribute("data-pack-lic") !== null) {
+    PACKLIC = t.value; render(); return;
+  }
+  if (t && t.id === "importFile" && t.files && t.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        var obj = JSON.parse(e.target.result);
+        if (!obj || !obj.licences) throw new Error("bad file");
+        STATE = obj;
+        if (!STATE.settings) STATE.settings = { dark: "0" };
+        if (!STATE.people) STATE.people = [];
+        if (!STATE.ce) STATE.ce = [];
+        if (!STATE.docs) STATE.docs = [];
+        if (!STATE.company) STATE.company = blank().company;
+        save(); render();
+      } catch (err) { alert("That file could not be read as a backup."); }
+    };
+    reader.readAsText(t.files[0]);
+  }
+});
+
+load();
+render();
+</script>
+</body></html>
