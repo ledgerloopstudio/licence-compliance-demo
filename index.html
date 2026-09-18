@@ -104,19 +104,21 @@ textarea{min-height:60px;resize:vertical}
 .demo-banner .x{position:absolute;right:10px;top:6px;background:none;border:none;color:#fff;font:inherit;cursor:pointer;opacity:.85;padding:4px 8px}
 .demo-banner .x:hover{opacity:1}
 @media print{.demo-banner{display:none!important}}
+.buildstamp{max-width:1180px;margin:0 auto;padding:4px 22px 30px;color:#8A9AA5;font-size:11px;letter-spacing:.04em;text-align:right}
 </style></head>
 <body>
-<div class="demo-banner" id="demoBanner">DEMO — example data, add up to 15 of your own courses and see whether it thinks the way you do. Nothing is saved permanently and it can reset any time. <a href="https://www.etsy.com/shop/LedgerLoopStudio" target="_blank" rel="noopener">Buy the full version</a> for your own unlimited, permanent copy.<button class="x" onclick="document.getElementById('demoBanner').style.display='none'" aria-label="Dismiss">✕</button></div>
+<div class="demo-banner" id="demoBanner">DEMO â example data, add up to 15 of your own courses and see whether it thinks the way you do. Nothing is saved permanently and it can reset any time. <a href="https://www.etsy.com/shop/LedgerLoopStudio" target="_blank" rel="noopener">Buy the full version</a> for your own unlimited, permanent copy.<button class="x" onclick="document.getElementById('demoBanner').style.display='none'" aria-label="Dismiss">â</button></div>
 <div class="top">
   <div class="brand"><span class="dot"></span><span>Licence &amp; CE Compliance<small>LEDGERLOOPSTUDIO</small></span></div>
   <div class="tabs" id="tabs"></div>
-  <button class="tab" data-toggledark="1">☾ Dark</button>
+  <button class="tab" data-toggledark="1">â¾ Dark</button>
 </div>
 <div class="wrap" id="app"></div>
+<div class="buildstamp noprint">Licence &amp; CE Compliance Tracker &middot; build 2026-09-18 &middot; LedgerLoopStudio</div>
 
 <script id="logic">
 /* ============================================================================
-   PURE LOGIC — no DOM. Plain data in, plain data out, unit-testable.
+   PURE LOGIC â no DOM. Plain data in, plain data out, unit-testable.
 
    THE HARD PROBLEM THIS SOLVES: a licence belongs to a PERSON, and a business
    is only compliant if every person on the roster is current. One tradesperson
@@ -127,7 +129,7 @@ textarea{min-height:60px;resize:vertical}
    ========================================================================== */
 
 /* ---------------------------------------------------------------------------
-   CONFIGURATION — EDIT FREELY. Licence classes, CE requirements, cycle lengths
+   CONFIGURATION â EDIT FREELY. Licence classes, CE requirements, cycle lengths
    and renewal windows are set by each state or licensing authority, differ by
    trade and class, and change. Nothing below states any authority's current
    rules. Confirm every figure against your own licensing board.
@@ -288,7 +290,7 @@ function licenceStatus(licence, ceRows, todayISOstr, warnDays) {
   };
 }
 
-/* THE ROSTER VIEW — is this person clear to work? */
+/* THE ROSTER VIEW â is this person clear to work? */
 function personStatus(person, licences, ceRows, todayISOstr, warnDays) {
   var mine = [];
   for (var i = 0; i < licences.length; i++) {
@@ -337,7 +339,7 @@ function renewalCalendar(licences, docs, people, todayISOstr) {
     var L = licences[i];
     var exp = L.expiry || addMonths(L.cycleStart, num(L.cycleMonths));
     items.push({ kind: "licence", id: L.id,
-                 label: tradeLabel(L.trade) + " — " + (L.state || ""),
+                 label: tradeLabel(L.trade) + " â " + (L.state || ""),
                  who: nameOf(L.personId), detail: L.number || "",
                  date: exp, daysLeft: daysUntil(todayISOstr, exp) });
   }
@@ -355,7 +357,7 @@ function renewalCalendar(licences, docs, people, todayISOstr) {
   return items;
 }
 
-/* COMPANY COMPLIANCE — the one number an owner actually wants. */
+/* COMPANY COMPLIANCE â the one number an owner actually wants. */
 function companyCompliance(people, licences, docs, ceRows, todayISOstr) {
   var peopleClear = 0, peopleAtRisk = 0, peopleBlocked = 0;
   for (var i = 0; i < people.length; i++) {
@@ -423,7 +425,7 @@ var DEMO_MODE = true, DEMO_CE_LIMIT = 24; /* 9 seeded + 15 room to try adding yo
 function demoLimitReached(){
   if(!DEMO_MODE) return false;
   if(!STATE.ce || STATE.ce.length < DEMO_CE_LIMIT) return false;
-  alert("You've reached the "+DEMO_CE_LIMIT+"-entry demo limit.\n\nThis is just a preview — buy the full version for unlimited entries, all features unlocked, and your own permanent copy.");
+  alert("You've reached the "+DEMO_CE_LIMIT+"-entry demo limit.\n\nThis is just a preview â buy the full version for unlimited entries, all features unlocked, and your own permanent copy.");
   return true;
 }
 
@@ -502,7 +504,7 @@ function seed() {
     { id: uid(), type: "workcomp", holder: "Company", provider: "State fund",
       number: "WC-889120", issued: iso(10, 1), expiry: fwd(2, 1), notes: "" },
     { id: uid(), type: "bond", holder: "Company", provider: "Surety Partners",
-      number: "SB-44021", issued: iso(22, 15), expiry: iso(1, 15), notes: "Lapsed — renew before next permit" },
+      number: "SB-44021", issued: iso(22, 15), expiry: iso(1, 15), notes: "Lapsed â renew before next permit" },
     { id: uid(), type: "vehicle", holder: "Company", provider: "Fleet Insurance Co",
       number: "CV-77310", issued: iso(7, 20), expiry: fwd(5, 20), notes: "Three vans" }
   ];
@@ -546,17 +548,17 @@ function personById(id) {
   for (var i = 0; i < STATE.people.length; i++) { if (STATE.people[i].id === id) return STATE.people[i]; }
   return null;
 }
-function personName(id) { var p = personById(id); return p ? p.name : "— unassigned —"; }
+function personName(id) { var p = personById(id); return p ? p.name : "â unassigned â"; }
 function licenceById(id) {
   for (var i = 0; i < STATE.licences.length; i++) { if (STATE.licences[i].id === id) return STATE.licences[i]; }
   return null;
 }
 function licenceLabel(id) {
   var L = licenceById(id);
-  return L ? tradeLabel(L.trade) + " · " + (L.state || "") + " · " + personName(L.personId) : "—";
+  return L ? tradeLabel(L.trade) + " Â· " + (L.state || "") + " Â· " + personName(L.personId) : "â";
 }
 function personOptions(sel) {
-  var out = el("option", { value: "" }, "— unassigned —");
+  var out = el("option", { value: "" }, "â unassigned â");
   for (var i = 0; i < STATE.people.length; i++) {
     out += el("option", { value: STATE.people[i].id, selected: STATE.people[i].id === sel ? "selected" : null },
       esc(STATE.people[i].name));
@@ -646,8 +648,8 @@ function viewDash() {
         cc.peopleBlocked ? cc.peopleBlocked + " blocked by an expired licence" : "Nobody blocked")) +
     el("div", { "class": "card" },
       el("h3", {}, "Next expiry") +
-      el("div", { "class": "kpi gold" }, next ? next.daysLeft : "—") +
-      el("div", { "class": "note" }, next ? esc(next.label) + (next.who ? " · " + esc(next.who) : "") : "Nothing scheduled")) +
+      el("div", { "class": "kpi gold" }, next ? next.daysLeft : "â") +
+      el("div", { "class": "note" }, next ? esc(next.label) + (next.who ? " Â· " + esc(next.who) : "") : "Nothing scheduled")) +
     el("div", { "class": "card" },
       el("h3", {}, "Documents expired") +
       el("div", { "class": "kpi " + (cc.docsExpired ? "bad" : "") }, cc.docsExpired) +
@@ -667,7 +669,7 @@ function viewDash() {
     rosterRows += el("tr", {},
       el("td", {}, esc(person.name) + el("div", { "class": "note" }, esc(person.role || ""))) +
       el("td", {}, ps.licences) +
-      el("td", {}, detail.join(" · ")) +
+      el("td", {}, detail.join(" Â· ")) +
       el("td", { style: "text-align:right" }, personPill(ps)));
   }
   var roster = STATE.people.length
@@ -685,10 +687,10 @@ function viewDash() {
     var cls = it.daysLeft === null ? "" : (it.daysLeft < 0 ? "bad" : (it.daysLeft <= 90 ? "amber" : "good"));
     soon += el("div", { "class": "barrow" },
       el("span", { style: "font-size:12.5px" }, esc(it.label) + (it.who ? el("div", { "class": "note" }, esc(it.who)) : "")) +
-      el("span", { "class": "note" }, esc(it.date || "—")) +
+      el("span", { "class": "note" }, esc(it.date || "â")) +
       el("span", { style: "text-align:right" },
         el("span", { "class": "pill " + cls },
-          it.daysLeft === null ? "—" : (it.daysLeft < 0 ? Math.abs(it.daysLeft) + "d ago" : it.daysLeft + "d"))));
+          it.daysLeft === null ? "â" : (it.daysLeft < 0 ? Math.abs(it.daysLeft) + "d ago" : it.daysLeft + "d"))));
   }
   var soonCard = el("div", { "class": "card" },
     el("h3", {}, "Next eight expiries") + (soon || el("div", { "class": "empty" }, "Nothing scheduled")));
@@ -707,7 +709,7 @@ function viewPeople() {
     var ps = personStatus(p, STATE.licences, STATE.ce, todayISO(), warnDays());
     return el("tr", {},
       el("td", {}, esc(p.name) + (p.notes ? el("div", { "class": "note" }, esc(p.notes)) : "")) +
-      el("td", {}, esc(p.role || "—")) +
+      el("td", {}, esc(p.role || "â")) +
       el("td", {}, ps.licences + el("div", { "class": "note" },
         ps.expired ? ps.expired + " expired" : (ps.notReady ? ps.notReady + " with CE outstanding" : "all current"))) +
       el("td", {}, esc(p.email || "") + (p.phone ? el("div", { "class": "note" }, esc(p.phone)) : "")) +
@@ -746,11 +748,11 @@ function viewLicences() {
     return el("tr", {},
       el("td", {}, esc(personName(L.personId))) +
       el("td", {}, esc(tradeLabel(L.trade))) +
-      el("td", {}, esc(L.state || "—") + el("div", { "class": "note" }, esc(L.classLevel || ""))) +
-      el("td", {}, esc(L.number || "—")) +
+      el("td", {}, esc(L.state || "â") + el("div", { "class": "note" }, esc(L.classLevel || ""))) +
+      el("td", {}, esc(L.number || "â")) +
       el("td", {}, s.logged + " / " + s.need + " h" +
         (s.unverified > 0 ? el("div", { "class": "note" }, s.unverified + "h unproven") : "")) +
-      el("td", {}, esc(s.expiry || "—") + el("div", { "class": "note" },
+      el("td", {}, esc(s.expiry || "â") + el("div", { "class": "note" },
         s.daysLeft === null ? "" : (s.daysLeft < 0 ? Math.abs(s.daysLeft) + " days ago" : s.daysLeft + " days"))) +
       el("td", {}, statusPill(s)) +
       el("td", { style: "text-align:right;white-space:nowrap" },
@@ -779,7 +781,7 @@ function viewCE() {
     if (!list.length) chips = el("span", { "class": "pill bad" }, "Not assigned");
     return el("tr", {},
       el("td", {}, esc(r.date)) +
-      el("td", {}, esc(r.title || "—") + (r.provider ? el("div", { "class": "note" }, esc(r.provider)) : "")) +
+      el("td", {}, esc(r.title || "â") + (r.provider ? el("div", { "class": "note" }, esc(r.provider)) : "")) +
       el("td", {}, esc(topicLabel(r.topic))) +
       el("td", {}, round1(num(r.hours))) +
       el("td", {}, chips) +
@@ -792,7 +794,7 @@ function viewCE() {
   }, "Log the first course.", head);
 
   return el("h2", {}, "CE Log") +
-    el("div", { "class": "sub" }, "One course can cover two people's licences if they both attended — tick both.") +
+    el("div", { "class": "sub" }, "One course can cover two people's licences if they both attended â tick both.") +
     el("div", { "class": "row", style: "margin-bottom:12px" },
       el("button", { "class": "btn pri", "data-new-e": "1" }, "+ Add course")) +
     body;
@@ -823,7 +825,7 @@ function viewRequirements() {
             el("th", { style: "text-align:right" }, "Status") + el("th", {}, "")) + rows))
       : el("div", { "class": "empty" }, "No topic minimums set for this licence.");
     cards += el("div", { "class": "card" },
-      el("h3", {}, esc(personName(L.personId)) + " — " + esc(tradeLabel(L.trade)) + " " + esc(L.state || "")) +
+      el("h3", {}, esc(personName(L.personId)) + " â " + esc(tradeLabel(L.trade)) + " " + esc(L.state || "")) +
       table +
       el("div", { "class": "row", style: "margin-top:10px" },
         el("select", { id: "tm_" + L.id, style: "max-width:230px" }, topicOptions("")) +
@@ -837,7 +839,7 @@ function viewRequirements() {
   }
 
   return el("h2", {}, "Requirements") +
-    el("div", { "class": "sub" }, "Code hours, business-and-law hours, safety hours — set per licence.") +
+    el("div", { "class": "sub" }, "Code hours, business-and-law hours, safety hours â set per licence.") +
     legalNote() + cards;
 }
 
@@ -856,9 +858,9 @@ function viewDocs() {
     return el("tr", {},
       el("td", {}, esc(docTypeLabel(d.type)) + (d.notes ? el("div", { "class": "note" }, esc(d.notes)) : "")) +
       el("td", {}, esc(d.holder || "Company")) +
-      el("td", {}, esc(d.provider || "—")) +
-      el("td", {}, esc(d.number || "—")) +
-      el("td", {}, esc(d.expiry || "—")) +
+      el("td", {}, esc(d.provider || "â")) +
+      el("td", {}, esc(d.number || "â")) +
+      el("td", {}, esc(d.expiry || "â")) +
       el("td", {}, pill) +
       el("td", { style: "text-align:right;white-space:nowrap" },
         el("button", { "class": "btn sm", "data-edit-d": d.id }, "Edit") + " " +
@@ -883,9 +885,9 @@ function viewCalendar() {
     else if (it.daysLeft <= 90) pill = el("span", { "class": "pill amber" }, "in " + it.daysLeft + " days");
     else pill = el("span", { "class": "pill good" }, "in " + it.daysLeft + " days");
     rows += el("tr", {},
-      el("td", {}, esc(it.date || "—")) +
+      el("td", {}, esc(it.date || "â")) +
       el("td", {}, esc(it.label) + (it.detail ? el("div", { "class": "note" }, esc(it.detail)) : "")) +
-      el("td", {}, esc(it.who || "—")) +
+      el("td", {}, esc(it.who || "â")) +
       el("td", {}, el("span", { "class": "pill " + (it.kind === "licence" ? "blue" : "") },
         it.kind === "licence" ? "Licence" : "Document")) +
       el("td", { style: "text-align:right" }, pill));
@@ -911,11 +913,11 @@ function viewReports() {
     var s = licenceStatus(L, STATE.ce, todayISO(), warnDays());
     rows += el("tr", {},
       el("td", {}, esc(personName(L.personId))) +
-      el("td", {}, esc(tradeLabel(L.trade)) + " · " + esc(L.state || "")) +
+      el("td", {}, esc(tradeLabel(L.trade)) + " Â· " + esc(L.state || "")) +
       el("td", {}, s.logged + " / " + s.need) +
       el("td", {}, s.unverified) +
       el("td", {}, s.topicsMet ? "Met" : "Short") +
-      el("td", {}, esc(s.expiry || "—")) +
+      el("td", {}, esc(s.expiry || "â")) +
       el("td", { style: "text-align:right" }, statusPill(s)));
   }
   var head = el("tr", {},
@@ -940,10 +942,10 @@ function viewReports() {
     for (var k = 0; k < acts.length; k++) {
       aRows += el("tr", {},
         el("td", {}, esc(acts[k].date)) +
-        el("td", {}, esc(acts[k].title || "—")) +
+        el("td", {}, esc(acts[k].title || "â")) +
         el("td", {}, esc(topicLabel(acts[k].topic))) +
         el("td", {}, round1(num(acts[k].hours))) +
-        el("td", {}, esc(acts[k].provider || "—")) +
+        el("td", {}, esc(acts[k].provider || "â")) +
         el("td", {}, acts[k].certificate === "1" ? "Yes" : "No"));
     }
     var tRows = "";
@@ -958,7 +960,7 @@ function viewReports() {
     for (var o = 0; o < STATE.licences.length; o++) {
       var LO = STATE.licences[o];
       opts += el("option", { value: LO.id, selected: LO.id === sel ? "selected" : null },
-        esc(personName(LO.personId) + " — " + tradeLabel(LO.trade)));
+        esc(personName(LO.personId) + " â " + tradeLabel(LO.trade)));
     }
     sheet = el("div", { "class": "row noprint", style: "margin:14px 0" },
         el("select", { "data-pack-lic": "1", style: "max-width:300px" }, opts) +
@@ -966,15 +968,15 @@ function viewReports() {
       el("div", { "class": "sheetprint", id: "packSheet" },
         el("h4", {}, "Continuing Education Record") +
         el("div", { "class": "psub" },
-          esc(STATE.company.name || "") + " · " + esc(personName(L2.personId)) +
-          " · prepared " + esc(todayISO())) +
+          esc(STATE.company.name || "") + " Â· " + esc(personName(L2.personId)) +
+          " Â· prepared " + esc(todayISO())) +
         el("table", {},
           el("tr", {}, el("th", {}, "Licence") + el("td", {},
-            esc(tradeLabel(L2.trade)) + (L2.classLevel ? " — " + esc(L2.classLevel) : ""))) +
-          el("tr", {}, el("th", {}, "State") + el("td", {}, esc(L2.state || "—"))) +
-          el("tr", {}, el("th", {}, "Number") + el("td", {}, esc(L2.number || "—"))) +
+            esc(tradeLabel(L2.trade)) + (L2.classLevel ? " â " + esc(L2.classLevel) : ""))) +
+          el("tr", {}, el("th", {}, "State") + el("td", {}, esc(L2.state || "â"))) +
+          el("tr", {}, el("th", {}, "Number") + el("td", {}, esc(L2.number || "â"))) +
           el("tr", {}, el("th", {}, "Cycle") + el("td", {}, esc(s2.cycleStart) + " to " + esc(s2.cycleEnd))) +
-          el("tr", {}, el("th", {}, "Expires") + el("td", {}, esc(s2.expiry || "—"))) +
+          el("tr", {}, el("th", {}, "Expires") + el("td", {}, esc(s2.expiry || "â"))) +
           el("tr", {}, el("th", {}, "Hours required") + el("td", {}, s2.need)) +
           el("tr", {}, el("th", {}, "Hours logged") + el("td", {}, s2.logged)) +
           el("tr", {}, el("th", {}, "Hours with a certificate") + el("td", {}, round1(s2.logged - s2.unverified)))) +
@@ -994,8 +996,8 @@ function viewReports() {
         el("h3", {}, "Company position") +
         el("div", { "class": "kpi" }, el("span", { "class": "lamp " + cc.lamp }, "") + esc(cc.verdict)) +
         el("div", { "class": "note" },
-          cc.peopleClear + " of " + cc.people + " people clear · " +
-          cc.licShort + " licence(s) with CE outstanding · " +
+          cc.peopleClear + " of " + cc.people + " people clear Â· " +
+          cc.licShort + " licence(s) with CE outstanding Â· " +
           cc.docsExpired + " document(s) expired")) +
       el("div", { "class": "card" },
         el("h3", {}, "Backup and export") +
@@ -1070,7 +1072,7 @@ function modalCE() {
     for (var k = 0; k < list.length; k++) { if (list[k] === L.id) on = true; }
     checks += el("label", { style: "display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;margin-bottom:6px;font-size:13px" },
       el("input", { type: "checkbox", "data-lic-check": L.id, checked: on ? "checked" : null, style: "width:auto;margin:0" }, "") +
-      el("span", {}, esc(personName(L.personId) + " — " + tradeLabel(L.trade) + " " + (L.state || ""))));
+      el("span", {}, esc(personName(L.personId) + " â " + tradeLabel(L.trade) + " " + (L.state || ""))));
   }
   if (!STATE.licences.length) checks = el("p", { "class": "hint" }, "Add a licence first.");
 
